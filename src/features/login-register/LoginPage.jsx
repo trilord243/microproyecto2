@@ -44,12 +44,12 @@ export default function LoginPage() {
                 store.dispatch(updateUser(newUser));
                 console.log("Usuario registrado con éxito")
                 await setDoc(userRef, newUser);
-                navigate('/')
+                navigate('/profile')
             }
 
             if (userSnap.exists()) {
                 const userData = userSnap.data();
-                console.log("Usuario ya registrado", userData);
+
 
 
                 const profileRef = doc(db, "users", userData.id);
@@ -58,7 +58,7 @@ export default function LoginPage() {
                 if (profileSnap.exists()) {
 
                     const profileData = profileSnap.data();
-                    console.log(profileData);
+
                     store.dispatch(updateUser(profileData));
                     navigate('/')
                 } else {

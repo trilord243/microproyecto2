@@ -17,7 +17,7 @@ import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/react/20/solid'
 import { auth } from '../../firebase/firebase'
 import { useDispatch, useSelector } from "react-redux";
 import { getUserFoto, getUserName, resetUserState } from '../user/userSlice'
-import { Link, NavLink } from 'react-router-dom'
+import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { signOut } from 'firebase/auth'
 const navigation = [
     { name: 'Principal', link: '/', icon: HomeIcon, current: true },
@@ -32,6 +32,8 @@ function classNames(...classes) {
 
 // eslint-disable-next-line react/prop-types
 export default function SideNavbar({ children }) {
+    const navigate = useNavigate()
+
     const dispatch = useDispatch()
     const name = useSelector(getUserName)
     const foto = useSelector(getUserFoto)
@@ -39,7 +41,9 @@ export default function SideNavbar({ children }) {
     const resetUser = () => {
 
         signOut(auth)
+        navigate('/login')
         dispatch(resetUserState())
+
     }
     const [sidebarOpen, setSidebarOpen] = useState(false)
 

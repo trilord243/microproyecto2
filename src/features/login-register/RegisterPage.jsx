@@ -1,6 +1,6 @@
-import { Form, redirect, useActionData, useNavigate } from "react-router-dom";
+import { Form, redirect, useActionData, useNavigate, useLoaderData } from "react-router-dom";
 import Tab from "../ui/Tab";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { auth, db, storage } from "../../firebase/firebase";
 
@@ -9,10 +9,11 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { doc, getDoc, getFirestore, setDoc } from "firebase/firestore";
 import store from "../../store";
 import { updateUser } from "../user/userSlice";
+import { getAllVideojuegos, getVideojuegoBanner } from "../../api/getVideoJuegos";
 export default function RegisterPage() {
     const navigate = useNavigate();
     const [error, setError] = useState(null);
-
+    const [videojuegos, setVideojuegos] = useState([]);
     const [coverPhoto, setCoverPhoto] = useState(null);
 
     const handleFileChangeProfile = (event) => {
@@ -38,7 +39,7 @@ export default function RegisterPage() {
 
 
             const result = await signInWithPopup(auth, provider);
-            /*  const credential = GoogleAuthProvider.credentialFromResult(result); */
+
 
             const user = result.user;
 
@@ -78,7 +79,7 @@ export default function RegisterPage() {
                     const profileData = profileSnap.data();
                     console.log(profileData);
                     store.dispatch(updateUser(profileData));
-                    navigate('/')
+                    navigate('/profile')
                 } else {
                     console.log("No se encontró el documento del perfil del usuario.");
                 }
@@ -93,9 +94,20 @@ export default function RegisterPage() {
             return { success: false, error: error.message };
         }
     }
+    /*  const videojuegos = useLoaderData(); */
 
+    useEffect(() => {
+        const fetchVideojuegos = async () => {
+            try {
+                const videojuegos = await getAllVideojuegos(db);
+                setVideojuegos(videojuegos);
+            } catch (error) {
+                console.error("Error al obtener los videojuegos:", error);
+            }
+        };
 
-
+        fetchVideojuegos();
+    }, [videojuegos]);
 
     return (
         <>
@@ -240,11 +252,13 @@ export default function RegisterPage() {
                                     id="favorite"
                                     name="favorite"
                                     className="mt-2 block w-full rounded-md border border-gray-300 py-1.5 pl-3 pr-10 bg-white text-gray-900 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                                    defaultValue="Canada"
+                                    defaultValue="1"
                                 >
-                                    <option>United States</option>
-                                    <option>Canada</option>
-                                    <option>Mexico</option>
+                                    {videojuegos.map((videojuego) => (
+
+                                        <option key={videojuego.id} value={videojuego.id}>{videojuego.titulo}</option>))
+                                    }
+
                                 </select>
                             </div>
 
@@ -364,6 +378,7 @@ export default function RegisterPage() {
 
 export async function action({ request }) {
     try {
+        let banner = ""
         console.log(request)
         let fotoUser = null
         const errors = {}
@@ -376,7 +391,7 @@ export async function action({ request }) {
         const password = formData.get('password');
         const favorite = formData.get('favorite');
         const photo = formData.get('profile-photo');
-        console.log(photo)
+
         const confirm_password = formData.get('confirm-password');
         console.log(name, apellido, email, username, password, favorite, photo, confirm_password)
 
@@ -402,6 +417,9 @@ export async function action({ request }) {
             return errors
         }
 
+        if (favorite) {
+            banner = await getVideojuegoBanner(db, favorite);
+        }
 
 
 
@@ -415,6 +433,7 @@ export async function action({ request }) {
         console.log(useCredential)
 
         const uid = useCredential.user.uid;
+        console.log(uid)
 
 
         if (photo) {
@@ -433,7 +452,7 @@ export async function action({ request }) {
             userName: username,
             videojuego_favorito: favorite,
             foto: fotoUser || "https://firebasestorage.googleapis.com/v0/b/sistema-info-d52b6.appspot.com/o/admin%2FAdmin-Profile-Vector-PNG.png?alt=media&token=cad644c6-bf60-49ac-8ca8-3bd80d056673",
-            cover: ""
+            cover: banner
 
         }
 
@@ -453,9 +472,21 @@ export async function action({ request }) {
 
 }
 
-export function loader() {
+export async function loader() {
 
-
-
+    /*    try {
+           const data = await getAllVideojuegos(db);
+   
+           return data;
+   
+       } catch (error) {
+           console.error("Error al obtener los videojuegos:", error);
+           return [];
+   
+       }
+    */
     return null
+
+
+
 }

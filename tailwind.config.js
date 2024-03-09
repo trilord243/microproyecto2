@@ -5,5 +5,5 @@ export default {
     extend: {},
   },
   // eslint-disable-next-line no-undef
-  plugins: [require("@tailwindcss/forms")],
+  plugins: [require("@tailwindcss/forms"), require("daisyui")],
 };
