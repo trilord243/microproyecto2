@@ -11,6 +11,9 @@ import AgrupacionPage, { loader as agrupacionLoader } from "./features/user/Agru
 
 import Profile, { action as profileAction } from "./features/user/Profile"
 
+import { GameCard } from "./features/ui/GameCard"
+import { loader as gameCardLoader } from "./features/ui/GameCard"
+
 
 
 
@@ -72,7 +75,8 @@ function App() {
               }
               , {
                 path: "/games",
-                element: <div>juegos</div>
+                element: <GameCard/>,  
+                loader: gameCardLoader
               }
             ]
 

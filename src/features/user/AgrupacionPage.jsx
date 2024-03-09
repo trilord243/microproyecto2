@@ -4,8 +4,15 @@ import { useLoaderData, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { arrayUnion, doc, updateDoc } from "firebase/firestore";
+
+
 export default function AgrupacionPage() {
+
+
+
+
     const data = useLoaderData();
+    console.log(data);
     const idUser = useSelector((state) => state.user.id);
     const miembros = useSelector((state) => state.user.membresia);
     const { id } = useParams();
@@ -13,10 +20,7 @@ export default function AgrupacionPage() {
 
 
     useEffect(() => {
-
         const checkMembership = () => {
-
-
             setIsMember(miembros.includes(id));
         };
 
