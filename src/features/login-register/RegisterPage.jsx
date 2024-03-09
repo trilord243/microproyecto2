@@ -60,7 +60,8 @@ export default function RegisterPage() {
                     userName: user.displayName || '',
                     videojuego_favorito: '',
                     foto: user.photoURL,
-                    cover: ''
+                    cover: '',
+                    miembroClub: []
                 };
 
                 store.dispatch(updateUser(newUser));
@@ -456,7 +457,8 @@ export async function action({ request }) {
             userName: username,
             videojuego_favorito: favorite,
             foto: fotoUser || "https://firebasestorage.googleapis.com/v0/b/sistema-info-d52b6.appspot.com/o/admin%2FAdmin-Profile-Vector-PNG.png?alt=media&token=cad644c6-bf60-49ac-8ca8-3bd80d056673",
-            cover: banner
+            cover: banner,
+            miembroClub: []
 
         }
 

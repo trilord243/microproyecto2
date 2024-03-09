@@ -38,7 +38,8 @@ export default function LoginPage() {
                     userName: user.displayName || '',
                     videojuego_favorito: '',
                     foto: user.photoURL,
-                    cover: ''
+                    cover: '',
+                    miembroClub: [],
                 };
 
                 store.dispatch(updateUser(newUser));

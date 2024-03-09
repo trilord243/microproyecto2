@@ -17,7 +17,6 @@ const userSlice = createSlice({
   reducers: {
     updateUser: (state, action) => {
       const {
-        id,
         nombre,
         userName,
         apellido,
@@ -25,8 +24,9 @@ const userSlice = createSlice({
         foto,
         videojuego_favorito,
         cover,
+        miembroClub,
       } = action.payload;
-      state.id = id;
+
       state.nombre = nombre;
       state.userName = userName;
       state.apellido = apellido;
@@ -34,6 +34,10 @@ const userSlice = createSlice({
       state.foto = foto;
       state.videojuego_favorito = videojuego_favorito;
       state.cover = cover;
+      state.membresia = miembroClub;
+    },
+    uppDateId: (state, action) => {
+      state.id = action.payload;
     },
 
     updateName: (state, action) => {
@@ -87,6 +91,7 @@ export const {
   updateVideojuegoFavorito,
   updateCover,
   resetUserState,
+  uppDateId,
 } = userSlice.actions;
 
 export default userSlice.reducer;
