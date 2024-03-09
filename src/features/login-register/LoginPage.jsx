@@ -4,13 +4,13 @@ import { doc, getDoc, getFirestore, setDoc } from "firebase/firestore";
 import { GoogleAuthProvider, getAuth, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { updateUser } from "../user/userSlice";
 import store from "../../store";
-import { useState } from "react";
+
 
 export default function LoginPage() {
     const navigate = useNavigate();
     const formErrors = useActionData();
 
-    const [error, setError] = useState('');
+
 
     const registerWithGoogle = async () => {
         try {
@@ -20,7 +20,7 @@ export default function LoginPage() {
 
 
             const result = await signInWithPopup(auth, provider);
-            /*  const credential = GoogleAuthProvider.credentialFromResult(result); */
+
 
             const user = result.user;
 
@@ -70,7 +70,6 @@ export default function LoginPage() {
 
         } catch (error) {
 
-            setError(error.message);
 
             return { success: false, error: error.message };
         }

@@ -11,7 +11,7 @@ export const AppLayout = () => {
     useEffect(() => {
 
         onAuthStateChanged(auth, (currentUser) => {
-            console.log(currentUser)
+
             if (currentUser) {
 
                 getUser(db, currentUser.uid).then((user) => {

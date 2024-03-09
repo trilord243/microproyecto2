@@ -5,7 +5,9 @@ import LoginPage, { action as loginAction } from "./features/login-register/Logi
 import RegisterPage, { action as registerAction } from "./features/login-register/RegisterPage"
 import { LoginRegiterLayout, loader as LoginRegisterLoader } from "./features/layout/LoginRegiterLayout"
 import { UserLayout, loader as userLoader } from "./features/layout/UserLayout"
-import Card from "./features/ui/Card"
+
+import { UserHomePage, loader as homeLoader } from "./features/user/UserHomePage"
+import AgrupacionPage, { loader as agrupacionLoader } from "./features/user/AgrupacionPage"
 
 
 
@@ -52,11 +54,13 @@ function App() {
 
               {
                 path: "/",
-                element: <Card />
+                element: <UserHomePage />,
+                loader: homeLoader
               },
               {
-                path: "/about",
-                element: <div>About</div>
+                path: "/agrupacion/:id",
+                element: <AgrupacionPage />,
+                loader: agrupacionLoader
               },
               {
                 path: "/contact",
