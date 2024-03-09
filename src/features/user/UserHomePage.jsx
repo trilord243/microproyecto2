@@ -1,9 +1,28 @@
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, query } from "firebase/firestore";
 import { db } from "../../firebase/firebase";
 import { useLoaderData } from "react-router-dom";
 import Card from "../ui/Card";
+import { useEffect, useState } from "react";
 export const UserHomePage = () => {
-    const agrupaciones = useLoaderData();
+    const [agrupaciones, setAgrupaciones] = useState([]);
+
+    useEffect(() => {
+        console.log("first")
+        const fetchAgrupaciones = async () => {
+            try {
+                const querySnapshot = await getDocs(collection(db, "clubes"));
+                const agrupacionesList = querySnapshot.docs.map((doc) => ({
+                    id: doc.id,
+                    ...doc.data(),
+                }));
+                setAgrupaciones(agrupacionesList);
+            } catch (error) {
+                console.error("Error al obtener las agrupaciones: ", error);
+            }
+        };
+
+        fetchAgrupaciones();
+    }, []);
 
     return (
         <>
@@ -29,17 +48,18 @@ export const UserHomePage = () => {
 
 export async function loader() {
 
-    try {
-        console.log("first")
-        const querySnapshot = await getDocs(collection(db, "clubes"));
-        const agrupacionesList = querySnapshot.docs.map((doc) => ({
-            id: doc.id,
-            ...doc.data(),
-        }));
-        return agrupacionesList;
-    } catch (error) {
-        console.error("Error al obtener las agrupaciones :", error);
-        return new Error("Error al obtener las agrupaciones ");
-    }
+    /*  try {
+ 
+         const querySnapshot = await getDocs(collection(db, "clubes"));
+         const agrupacionesList = querySnapshot.docs.map((doc) => ({
+             id: doc.id,
+             ...doc.data(),
+         }));
+         return agrupacionesList;
+     } catch (error) {
+         console.error("Error al obtener las agrupaciones :", error);
+         return new Error("Error al obtener las agrupaciones ");
+     } */
+    return null
 
 }
