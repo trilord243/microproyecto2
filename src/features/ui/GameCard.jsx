@@ -6,7 +6,7 @@ import { db } from '../../firebase/firebase';
 
 export const GameCard = () => {
     const data = useLoaderData();
-    console.log(data);
+  
     
 
 

@@ -26,9 +26,11 @@ const navigation = [
 
 ]
 
+
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
+
 
 // eslint-disable-next-line react/prop-types
 export default function SideNavbar({ children }) {
@@ -48,6 +50,15 @@ export default function SideNavbar({ children }) {
         }
     };
     const [sidebarOpen, setSidebarOpen] = useState(false)
+    const [filter, setfilter] = useState('')
+
+    const handleSearch = e => {
+        e.preventDefault()
+        navigate('/games')
+        setfilter((e.target.value))
+    }
+
+  
 
     return (
         <>
@@ -97,11 +108,7 @@ export default function SideNavbar({ children }) {
 
                                     <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-indigo-600 px-6 pb-4">
                                         <div className="flex h-16 shrink-0 items-center">
-                                            <img
-                                                className="h-8 w-auto"
-                                                src="https://tailwindui.com/img/logos/mark.svg?color=white"
-                                                alt="Your Company"
-                                            />
+                                            {newFunction()}
                                         </div>
                                         <nav className="flex flex-1 flex-col">
                                             <ul role="list" className="flex flex-1 flex-col gap-y-7">
@@ -156,11 +163,11 @@ export default function SideNavbar({ children }) {
                     {/* Sidebar component, swap this element with another sidebar if you like */}
                     <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-indigo-600 px-6 pb-4">
                         <div className="flex h-16 shrink-0 items-center">
-                            <img
+                            {/* <img
                                 className="h-8 w-auto"
                                 src="https://tailwindui.com/img/logos/mark.svg?color=white"
                                 alt="Your Company"
-                            />
+                            /> */}
                         </div>
                         <nav className="flex flex-1 flex-col">
                             <ul role="list" className="flex flex-1 flex-col gap-y-7">
@@ -206,9 +213,12 @@ export default function SideNavbar({ children }) {
                         <div className="h-6 w-px bg-gray-900/10 lg:hidden" aria-hidden="true" />
 
                         <div className="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
-                            <form className="relative flex flex-1" action="#" method="GET">
+                            <form className="relative flex flex-1" 
+                            
+                            onSubmit={handleSearch}
+                            >
                                 <label htmlFor="search-field" className="sr-only">
-                                    Search
+                                     Busca tus juegos
                                 </label>
                                 <MagnifyingGlassIcon
                                     className="pointer-events-none absolute inset-y-0 left-0 h-full w-5 text-gray-400"
@@ -220,6 +230,8 @@ export default function SideNavbar({ children }) {
                                     placeholder="Search..."
                                     type="search"
                                     name="search"
+                                    value={filter}
+                                    onChange={e => setfilter(e.target.value)}
                                 />
                             </form>
                             <div className="flex items-center gap-x-4 lg:gap-x-6">
@@ -260,7 +272,7 @@ export default function SideNavbar({ children }) {
 
                                             <Menu.Item >
 
-                                                <Link to="/profile" className={' hover:bg-slate-300  block px-3 py-1 text-sm leading-6 text-gray-900'}>
+                                                <Link to="/profile" className={' hover:bg-slate-300 text-center block px-3 py-1 text-sm leading-6 text-gray-900'}>
                                                     Perfil
                                                 </Link>
 
@@ -269,7 +281,7 @@ export default function SideNavbar({ children }) {
                                             <Menu.Item >
 
                                                 <button onClick={resetUser} className={' mt-3  w-full hover:bg-slate-300 block px-3 py-1 text-sm leading-6 text-gray-900'}>
-                                                    Cerrrar sesion
+                                                    Cerrar sesion
                                                 </button>
 
                                             </Menu.Item>
@@ -290,4 +302,11 @@ export default function SideNavbar({ children }) {
             </div>
         </>
     )
+
+    function newFunction() {
+        return <img
+            className="h-8 w-auto"
+            src="https://tailwindui.com/img/logos/mark.svg?color=white"
+            alt="Your Company" />
+    }
 }
