@@ -1,4 +1,4 @@
-import { Form, redirect, useActionData, useNavigate, useLoaderData } from "react-router-dom";
+import { Form, redirect, useActionData, useNavigate } from "react-router-dom";
 import Tab from "../ui/Tab";
 import { useEffect, useState } from "react";
 
@@ -34,6 +34,7 @@ export default function RegisterPage() {
     const formErrors = useActionData();
 
     const registerWithGoogle = async () => {
+        console.log("first")
         try {
             const db = getFirestore();
             const auth = getAuth();
@@ -488,7 +489,6 @@ export async function loader() {
 
     }
 
-    return null
 
 
 

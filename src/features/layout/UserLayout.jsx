@@ -1,10 +1,18 @@
-import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "../../firebase/firebase";
-import { redirect } from "react-router-dom";
+
+
+
 
 import { Outlet } from "react-router-dom";
 import SideNavbar from "./SideNavbar";
+
+
+import { redirect } from "react-router-dom";
+import { auth } from "../../firebase/firebase";
+import { onAuthStateChanged } from "firebase/auth";
 export const UserLayout = () => {
+
+
+
     return (
         <>
             <SideNavbar>
@@ -21,20 +29,9 @@ export const UserLayout = () => {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 export async function loader() {
     const checkAuth = new Promise((resolve, reject) => {
+        console.log("first")
         const unsubscribe = onAuthStateChanged(
             auth,
             (currentUser) => {
@@ -54,3 +51,11 @@ export async function loader() {
         return redirect("/login");
     });
 }
+
+
+
+
+
+
+
+

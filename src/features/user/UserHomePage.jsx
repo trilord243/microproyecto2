@@ -30,6 +30,7 @@ export const UserHomePage = () => {
 export async function loader() {
 
     try {
+        console.log("first")
         const querySnapshot = await getDocs(collection(db, "clubes"));
         const agrupacionesList = querySnapshot.docs.map((doc) => ({
             id: doc.id,

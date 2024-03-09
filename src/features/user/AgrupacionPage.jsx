@@ -66,6 +66,7 @@ export async function loader({ params }) {
     try {
 
         const data = await getClub(db, params.id);
+        console.log("first")
 
         return data;
     } catch (error) {

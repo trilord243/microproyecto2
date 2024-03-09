@@ -38,13 +38,15 @@ export default function SideNavbar({ children }) {
     const name = useSelector(getUserName)
     const foto = useSelector(getUserFoto)
 
-    const resetUser = () => {
-
-        signOut(auth)
-        navigate('/login')
-        dispatch(resetUserState())
-
-    }
+    const resetUser = async () => {
+        try {
+            await signOut(auth); // Espera a que signOut se complete
+            dispatch(resetUserState()); // Resetea el estado del usuario
+            navigate('/login'); // Redirecciona al usuario
+        } catch (error) {
+            console.error("Error signing out: ", error);
+        }
+    };
     const [sidebarOpen, setSidebarOpen] = useState(false)
 
     return (
@@ -266,9 +268,9 @@ export default function SideNavbar({ children }) {
 
                                             <Menu.Item >
 
-                                                <Link to="/login" onClick={resetUser} className={' mt-3  w-full hover:bg-slate-300 block px-3 py-1 text-sm leading-6 text-gray-900'}>
+                                                <button onClick={resetUser} className={' mt-3  w-full hover:bg-slate-300 block px-3 py-1 text-sm leading-6 text-gray-900'}>
                                                     Cerrrar sesion
-                                                </Link>
+                                                </button>
 
                                             </Menu.Item>
 

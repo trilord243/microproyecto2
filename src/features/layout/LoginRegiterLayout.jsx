@@ -1,8 +1,9 @@
-import { onAuthStateChanged } from 'firebase/auth';
+
 import { Outlet } from 'react-router-dom'
 import { auth } from '../../firebase/firebase';
 
 import { redirect } from 'react-router-dom';
+import { onAuthStateChanged } from 'firebase/auth';
 export const LoginRegiterLayout = () => {
     return (
         <>
@@ -15,9 +16,9 @@ export const LoginRegiterLayout = () => {
 }
 
 
-
 export async function loader() {
     const checkAuth = new Promise((resolve, reject) => {
+        console.log("first")
         const unsubscribe = onAuthStateChanged(
             auth,
             (currentUser) => {

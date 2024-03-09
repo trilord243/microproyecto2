@@ -4,10 +4,15 @@ import { Form } from 'react-router-dom'
 import Heaading from './Heading'
 import { useEffect, useState } from 'react';
 import { getAllVideojuegos } from '../../api/getVideoJuegos';
-import { db } from '../../firebase/firebase';
-import { getNombre, getUserApellido, getUserFoto, getUserName, getUserVideojuegoFavorito } from './userSlice';
+import { db, storage } from '../../firebase/firebase';
+import { getNombre, getUserApellido, getUserFoto, getUserName, getUserVideojuegoFavorito, updateUser } from './userSlice';
 import { useSelector } from 'react-redux';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import { doc, updateDoc } from 'firebase/firestore';
+import { redirect, useNavigate } from 'react-router-dom';
+import store from '../../store';
 export default function Profile() {
+    const navigate = useNavigate();
     const [videojuegos, setVideojuegos] = useState([]);
     const userName = useSelector(getUserName)
     const nombre = useSelector(getNombre)
@@ -21,6 +26,7 @@ export default function Profile() {
 
 
         const fetchVideojuegos = async () => {
+            console.log("first")
             try {
                 const videojuegos = await getAllVideojuegos(db);
                 setVideojuegos(videojuegos);
@@ -50,7 +56,7 @@ export default function Profile() {
 
             <Heaading />
 
-            <Form method="POST" className='flex flex-col lg:ml-14 px-6 items-center mt-6'>
+            <Form method="POST" encType="multipart/form-data" className='flex flex-col lg:ml-14 px-6 items-center mt-6'>
                 <div className="space-y-12">
                     <div className="border-b border-gray-900/10 pb-12">
                         <h2 className="text-base font-semibold leading-7 text-gray-900">Perfil </h2>
@@ -181,7 +187,7 @@ export default function Profile() {
                 </div>
 
                 <div className="mt-6 flex items-center justify-end gap-x-6">
-                    <button type="button" className="text-sm font-semibold leading-6 text-gray-900">
+                    <button onClick={() => navigate('/')} type="button" className="text-sm font-semibold leading-6 text-gray-900">
                         Cancel
                     </button>
                     <button
@@ -198,17 +204,47 @@ export default function Profile() {
 
 
 export async function action({ request }) {
-    try {
-        const formData = await request.formData();
-        const userName = formData.get('userName');
-        const nombre = formData.get('nombre');
-        const apellido = formData.get('apellido');
-        const videojuegoFavorito = formData.get('favorite');
-        const foto = formData.get('profile-photo');
-        console.log(foto, userName, nombre, apellido, videojuegoFavorito)
-        return null
-    } catch (error) {
-        console.log(error)
+    const formData = await request.formData();
+    const userName = formData.get('userName');
+    const nombre = formData.get('nombre');
+    const apellido = formData.get('apellido');
+    const videojuegoFavorito = formData.get('favorite');
+    const profilePhotoFile = formData.get('profile-photo');
+    console.log()
+
+
+    const userId = store.getState().user.id;
+
+    let photoURL = null;
+    if (profilePhotoFile && profilePhotoFile.size > 0) {
+        const storageRef = ref(storage, `users/${userId}/profile`);
+        await uploadBytes(storageRef, profilePhotoFile);
+        photoURL = await getDownloadURL(storageRef);
     }
 
+    try {
+        const userDocRef = doc(db, "users", userId);
+        await updateDoc(userDocRef, {
+            userName: userName,
+            nombre: nombre,
+            apellido: apellido,
+            videojuego_favorito: videojuegoFavorito,
+            ...(photoURL ? { foto: photoURL } : {}),
+        });
+
+        store.dispatch(updateUser({
+            id: userId,
+            userName: userName,
+            nombre: nombre,
+            apellido: apellido,
+            videojuego_favorito: videojuegoFavorito,
+            ...(photoURL ? { foto: photoURL } : {}),
+        }));
+
+        return redirect('/profile');
+    } catch (error) {
+        console.error("Error updating user profile", error);
+
+        throw new Error('Failed to update profile');
+    }
 }
