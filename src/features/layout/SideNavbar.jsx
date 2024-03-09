@@ -4,10 +4,10 @@ import { Dialog, Menu, Transition } from '@headlessui/react'
 import {
     Bars3Icon,
     BellIcon,
-    CalendarIcon,
-    ChartPieIcon,
+
+
     Cog6ToothIcon,
-    DocumentDuplicateIcon,
+
     FolderIcon,
     HomeIcon,
     UsersIcon,
@@ -17,15 +17,13 @@ import { ChevronDownIcon, MagnifyingGlassIcon } from '@heroicons/react/20/solid'
 import { auth } from '../../firebase/firebase'
 import { useDispatch, useSelector } from "react-redux";
 import { getUserFoto, getUserName, resetUserState } from '../user/userSlice'
-import { Link } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import { signOut } from 'firebase/auth'
 const navigation = [
-    { name: 'Dashboard', href: '#', icon: HomeIcon, current: true },
-    { name: 'Team', href: '#', icon: UsersIcon, current: false },
-    { name: 'Projects', href: '#', icon: FolderIcon, current: false },
-    { name: 'Calendar', href: '#', icon: CalendarIcon, current: false },
-    { name: 'Documents', href: '#', icon: DocumentDuplicateIcon, current: false },
-    { name: 'Reports', href: '#', icon: ChartPieIcon, current: false },
+    { name: 'Principal', link: '/', icon: HomeIcon, current: true },
+    { name: 'Perfil', link: '/profile', icon: UsersIcon, current: false },
+    { name: 'Juegos', link: '/games', icon: FolderIcon, current: false },
+
 ]
 
 function classNames(...classes) {
@@ -90,7 +88,7 @@ export default function SideNavbar({ children }) {
                                             </button>
                                         </div>
                                     </Transition.Child>
-                                    {/* Sidebar component, swap this element with another sidebar if you like */}
+
                                     <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-indigo-600 px-6 pb-4">
                                         <div className="flex h-16 shrink-0 items-center">
                                             <img
@@ -105,13 +103,11 @@ export default function SideNavbar({ children }) {
                                                     <ul role="list" className="-mx-2 space-y-1">
                                                         {navigation.map((item) => (
                                                             <li key={item.name}>
-                                                                <a
-                                                                    href={item.href}
-                                                                    className={classNames(
-                                                                        item.current
-                                                                            ? 'bg-indigo-700 text-white'
-                                                                            : 'text-indigo-200 hover:text-white hover:bg-indigo-700',
-                                                                        'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold'
+                                                                <NavLink
+                                                                    to={item.link}
+                                                                    className={({ isActive }) => (
+                                                                        `${isActive ? 'bg-indigo-700 text-white' : 'text-indigo-200 hover:text-white hover:bg-indigo-700'} group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold`
+
                                                                     )}
                                                                 >
                                                                     <item.icon
@@ -122,7 +118,7 @@ export default function SideNavbar({ children }) {
                                                                         aria-hidden="true"
                                                                     />
                                                                     {item.name}
-                                                                </a>
+                                                                </NavLink>
                                                             </li>
                                                         ))}
                                                     </ul>
@@ -166,13 +162,11 @@ export default function SideNavbar({ children }) {
                                     <ul role="list" className="-mx-2 space-y-1">
                                         {navigation.map((item) => (
                                             <li key={item.name}>
-                                                <a
-                                                    href={item.href}
-                                                    className={classNames(
-                                                        item.current
-                                                            ? 'bg-indigo-700 text-white'
-                                                            : 'text-indigo-200 hover:text-white hover:bg-indigo-700',
-                                                        'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold'
+                                                <NavLink
+                                                    to={item.link}
+                                                    className={({ isActive }) => (
+                                                        `${isActive ? 'bg-indigo-700 text-white' : 'text-indigo-200 hover:text-white hover:bg-indigo-700'} group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold`
+
                                                     )}
                                                 >
                                                     <item.icon
@@ -183,7 +177,7 @@ export default function SideNavbar({ children }) {
                                                         aria-hidden="true"
                                                     />
                                                     {item.name}
-                                                </a>
+                                                </NavLink>
                                             </li>
                                         ))}
                                     </ul>

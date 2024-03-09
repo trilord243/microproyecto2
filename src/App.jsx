@@ -63,8 +63,12 @@ function App() {
                 loader: agrupacionLoader
               },
               {
-                path: "/contact",
-                element: <div>Contact</div>
+                path: "/profile",
+                element: <div>perfil</div>
+              }
+              , {
+                path: "/games",
+                element: <div>juegos</div>
               }
             ]
 
