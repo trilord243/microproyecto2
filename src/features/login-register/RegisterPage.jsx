@@ -1,8 +1,17 @@
-import { Form } from "react-router-dom";
+import { Form, redirect, useActionData, useNavigate } from "react-router-dom";
 import Tab from "../ui/Tab";
 import { useState } from "react";
 
+import { auth, db, storage } from "../../firebase/firebase";
+
+import { GoogleAuthProvider, createUserWithEmailAndPassword, getAuth, signInWithPopup } from "firebase/auth";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { doc, getDoc, getFirestore, setDoc } from "firebase/firestore";
+import store from "../../store";
+import { updateUser } from "../user/userSlice";
 export default function RegisterPage() {
+    const navigate = useNavigate();
+    const [error, setError] = useState(null);
 
     const [coverPhoto, setCoverPhoto] = useState(null);
 
@@ -18,7 +27,74 @@ export default function RegisterPage() {
             reader.readAsDataURL(file);
         }
     };
-    console.log(coverPhoto)
+
+    const formErrors = useActionData();
+
+    const registerWithGoogle = async () => {
+        try {
+            const db = getFirestore();
+            const auth = getAuth();
+            const provider = new GoogleAuthProvider();
+
+
+            const result = await signInWithPopup(auth, provider);
+            /*  const credential = GoogleAuthProvider.credentialFromResult(result); */
+
+            const user = result.user;
+
+
+            const userRef = doc(db, "users", user.uid);
+            const userSnap = await getDoc(userRef);
+
+
+            if (!userSnap.exists()) {
+                const newUser = {
+                    id: user.uid,
+                    nombre: user.displayName || '',
+                    apellido: '',
+                    email: user.email,
+                    userName: user.displayName || '',
+                    videojuego_favorito: '',
+                    foto: user.photoURL,
+                    cover: ''
+                };
+
+                store.dispatch(updateUser(newUser));
+                console.log("Usuario registrado con éxito")
+                await setDoc(userRef, newUser);
+                navigate('/')
+            }
+
+            if (userSnap.exists()) {
+                const userData = userSnap.data();
+                console.log("Usuario ya registrado", userData);
+
+
+                const profileRef = doc(db, "users", userData.id);
+                const profileSnap = await getDoc(profileRef);
+
+                if (profileSnap.exists()) {
+
+                    const profileData = profileSnap.data();
+                    console.log(profileData);
+                    store.dispatch(updateUser(profileData));
+                    navigate('/')
+                } else {
+                    console.log("No se encontró el documento del perfil del usuario.");
+                }
+            }
+
+
+
+        } catch (error) {
+
+            setError(error.message);
+
+            return { success: false, error: error.message };
+        }
+    }
+
+
 
 
     return (
@@ -34,6 +110,7 @@ export default function RegisterPage() {
                     <h2 className="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
                         Registrate!
                     </h2>
+
                 </div>
 
 
@@ -41,6 +118,16 @@ export default function RegisterPage() {
 
                 <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px] ">
                     <div className="bg-white px-6 py-12 shadow sm:rounded-lg  sm:px-12">
+                        {formErrors && (
+                            <p className="text-red-500 text-xl text-center mt-4 mb-4">
+                                {formErrors.message}
+                            </p>
+                        )}
+
+                        {error && <p className="text-red-500 text-xl text-center mt-4 mb-4">
+                            {error}
+                        </p>}
+
                         <Form className="space-y-6" action="#" method="POST" encType="multipart/form-data"  >
                             <div>
                                 <label htmlFor="name" className="block text-sm font-medium leading-6 text-gray-900">
@@ -114,7 +201,7 @@ export default function RegisterPage() {
 
                             <div>
                                 <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
-                                    Password
+                                    Contraseña
                                 </label>
                                 <div className="mt-2">
                                     <input
@@ -128,6 +215,21 @@ export default function RegisterPage() {
                                 </div>
                             </div>
 
+                            <div>
+                                <label htmlFor="confirm-password" className="block text-sm font-medium leading-6 text-gray-900">
+                                    Confirmar contraseña
+                                </label>
+                                <div className="mt-2">
+                                    <input
+                                        id="confirm-password"
+                                        name="confirm-password"
+                                        type="password"
+                                        autoComplete="current-password"
+                                        required
+                                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                    />
+                                </div>
+                            </div>
 
 
                             <div className="relative">
@@ -210,8 +312,8 @@ export default function RegisterPage() {
                             </div>
 
                             <div className="mt-6 grid grid-cols-2 gap-4">
-                                <a
-                                    href="#"
+                                <button onClick={registerWithGoogle}
+
                                     className="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:ring-transparent"
                                 >
                                     <svg className="h-5 w-5" aria-hidden="true" viewBox="0 0 24 24">
@@ -233,7 +335,7 @@ export default function RegisterPage() {
                                         />
                                     </svg>
                                     <span className="text-sm font-semibold leading-6">Google</span>
-                                </a>
+                                </button>
 
                                 <a
                                     href="#"
@@ -260,25 +362,100 @@ export default function RegisterPage() {
 }
 
 
-export async function action(request) {
-    const formData = await request.formData();
-    const name = formData.get('name');
-    const apellido = formData.get('apellido');
-    const email = formData.get('email');
-    const username = formData.get('username');
-    const password = formData.get('password');
-    const favorite = formData.get('favorite');
-    const photo = formData.get('photo');
+export async function action({ request }) {
+    try {
+        console.log(request)
+        let fotoUser = null
+        const errors = {}
+        const formData = await request.formData();
 
-    return null
+        const name = formData.get('name');
+        const apellido = formData.get('apellido');
+        const email = formData.get('email');
+        const username = formData.get('username');
+        const password = formData.get('password');
+        const favorite = formData.get('favorite');
+        const photo = formData.get('profile-photo');
+        console.log(photo)
+        const confirm_password = formData.get('confirm-password');
+        console.log(name, apellido, email, username, password, favorite, photo, confirm_password)
+
+
+        if (password !== confirm_password) {
+            errors.message = 'Las contraseñas no coinciden'
+
+
+
+            return errors
+
+        }
+
+        if (!name || !apellido || !email || !username || !password || !favorite) {
+            errors.message = 'Todos los campos son requeridos'
+
+            return errors
+        }
+
+        if (password.length < 6) {
+            errors.message = 'La contraseña debe tener al menos 6 caracteres'
+
+            return errors
+        }
+
+
+
+
+
+
+        const useCredential = await createUserWithEmailAndPassword(
+            auth,
+            email,
+            password
+        );
+        console.log(useCredential)
+
+        const uid = useCredential.user.uid;
+
+
+        if (photo) {
+            const storageRef = ref(storage, `users/${uid}/profile.jpg`);
+            const uploadTask = await uploadBytes(storageRef, photo);
+            if (uploadTask) {
+                fotoUser = await getDownloadURL(storageRef);
+            }
+        }
+
+        const user = {
+            id: uid,
+            nombre: name,
+            apellido: apellido,
+            email: email,
+            userName: username,
+            videojuego_favorito: favorite,
+            foto: fotoUser || "https://firebasestorage.googleapis.com/v0/b/sistema-info-d52b6.appspot.com/o/admin%2FAdmin-Profile-Vector-PNG.png?alt=media&token=cad644c6-bf60-49ac-8ca8-3bd80d056673",
+            cover: ""
+
+        }
+
+        await setDoc(doc(db, "users", uid), user);
+        store.dispatch(updateUser(user));
+
+        return redirect('/')
+
+    } catch (error) {
+        console.log(error)
+        return { message: error.message }
+
+
+
+    }
 
 
 }
 
+export function loader() {
 
-export async function loader() {
+
+
     return null
-
-
-
 }

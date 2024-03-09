@@ -1,7 +1,80 @@
-import { Form } from "react-router-dom";
+import { Form, useNavigate, redirect, useActionData } from "react-router-dom";
 import Tab from "../ui/Tab";
+import { doc, getDoc, getFirestore, setDoc } from "firebase/firestore";
+import { GoogleAuthProvider, getAuth, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import { updateUser } from "../user/userSlice";
+import store from "../../store";
+import { useState } from "react";
 
 export default function LoginPage() {
+    const navigate = useNavigate();
+    const formErrors = useActionData();
+
+    const [error, setError] = useState('');
+
+    const registerWithGoogle = async () => {
+        try {
+            const db = getFirestore();
+            const auth = getAuth();
+            const provider = new GoogleAuthProvider();
+
+
+            const result = await signInWithPopup(auth, provider);
+            /*  const credential = GoogleAuthProvider.credentialFromResult(result); */
+
+            const user = result.user;
+
+
+            const userRef = doc(db, "users", user.uid);
+            const userSnap = await getDoc(userRef);
+
+
+            if (!userSnap.exists()) {
+                const newUser = {
+                    id: user.uid,
+                    nombre: user.displayName || '',
+                    apellido: '',
+                    email: user.email,
+                    userName: user.displayName || '',
+                    videojuego_favorito: '',
+                    foto: user.photoURL,
+                    cover: ''
+                };
+
+                store.dispatch(updateUser(newUser));
+                console.log("Usuario registrado con éxito")
+                await setDoc(userRef, newUser);
+                navigate('/')
+            }
+
+            if (userSnap.exists()) {
+                const userData = userSnap.data();
+                console.log("Usuario ya registrado", userData);
+
+
+                const profileRef = doc(db, "users", userData.id);
+                const profileSnap = await getDoc(profileRef);
+
+                if (profileSnap.exists()) {
+
+                    const profileData = profileSnap.data();
+                    console.log(profileData);
+                    store.dispatch(updateUser(profileData));
+                    navigate('/')
+                } else {
+                    console.log("No se encontró el documento del perfil del usuario.");
+                }
+            }
+
+
+
+        } catch (error) {
+
+            setError(error.message);
+
+            return { success: false, error: error.message };
+        }
+    }
     return (
         <>
 
@@ -22,6 +95,7 @@ export default function LoginPage() {
 
                 <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px] ">
                     <div className="bg-white px-6 py-12 shadow sm:rounded-lg  sm:px-12">
+                        {formErrors && <p className="text-center text-red-500">  {formErrors.credential}</p>}
                         <Form className="space-y-6" action="#" method="POST">
                             <div>
                                 <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
@@ -78,8 +152,8 @@ export default function LoginPage() {
                             </div>
 
                             <div className="mt-6 grid grid-cols-2 gap-4">
-                                <a
-                                    href="#"
+                                <button
+                                    onClick={registerWithGoogle}
                                     className="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:ring-transparent"
                                 >
                                     <svg className="h-5 w-5" aria-hidden="true" viewBox="0 0 24 24">
@@ -101,7 +175,7 @@ export default function LoginPage() {
                                         />
                                     </svg>
                                     <span className="text-sm font-semibold leading-6">Google</span>
-                                </a>
+                                </button>
 
                                 <a
                                     href="#"
@@ -125,4 +199,33 @@ export default function LoginPage() {
             </div>
         </>
     )
+}
+
+
+
+
+
+export async function action({ request }) {
+
+    try {
+        const formData = await request.formData();
+        const email = formData.get('email');
+        const password = formData.get('password');
+        console.log(email, password)
+
+        await signInWithEmailAndPassword(getAuth(), email, password);
+        return redirect('/');
+    } catch (error) {
+        console.log(error)
+        const errors = {};
+        if (error) {
+            error.message === "Firebase: Error (auth/invalid-credential)."
+                ? (errors.credential =
+                    "Credencial invalida Email o password incorretos. Intenta denuevo ")
+                : (errors.credential = error.message);
+
+            return errors;
+        }
+    }
+
 }

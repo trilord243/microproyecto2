@@ -1,10 +1,11 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom"
 import { AppLayout } from "./features/layout/AppLayout"
 import { ErrorPage } from "./features/ui/ErrorPage"
-import LoginPage from "./features/login-register/LoginPage"
-import RegisterPage, { action as registerAction, loader as registerLoader } from "./features/login-register/RegisterPage"
-import { LoginRegiterLayout } from "./features/layout/LoginRegiterLayout"
-import { UserLayout } from "./features/layout/UserLayout"
+import LoginPage, { action as loginAction } from "./features/login-register/LoginPage"
+import RegisterPage, { action as registerAction } from "./features/login-register/RegisterPage"
+import { LoginRegiterLayout, loader as LoginRegisterLoader } from "./features/layout/LoginRegiterLayout"
+import { UserLayout, loader as userLoader } from "./features/layout/UserLayout"
+import Card from "./features/ui/Card"
 
 
 
@@ -26,17 +27,19 @@ function App() {
 
           {
             element: <LoginRegiterLayout />,
+            loader: LoginRegisterLoader,
             errorElement: <ErrorPage />,
             children: [
               {
                 path: "/login",
-                element: <LoginPage />
+                element: <LoginPage />,
+                action: loginAction
               },
               {
                 path: "/register",
                 element: <RegisterPage />,
                 action: registerAction,
-                loader: registerLoader
+
               }
             ]
           },
@@ -44,11 +47,12 @@ function App() {
 
           {
             element: <UserLayout />,
+            loader: userLoader,
             children: [
 
               {
                 path: "/",
-                element: <div>Home</div>
+                element: <Card />
               },
               {
                 path: "/about",
