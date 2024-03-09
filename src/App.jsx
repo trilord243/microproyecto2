@@ -9,7 +9,7 @@ import { UserLayout, loader as userLoader } from "./features/layout/UserLayout"
 import { UserHomePage, loader as homeLoader } from "./features/user/UserHomePage"
 import AgrupacionPage, { loader as agrupacionLoader } from "./features/user/AgrupacionPage"
 
-import Profile from "./features/user/Profile"
+import Profile, { action as profileAction } from "./features/user/Profile"
 
 
 
@@ -67,7 +67,8 @@ function App() {
               },
               {
                 path: "/profile",
-                element: <Profile />
+                element: <Profile />,
+                action: profileAction
               }
               , {
                 path: "/games",

@@ -67,6 +67,7 @@ const userSlice = createSlice({
 });
 
 export const getUserName = (state) => state.user.userName;
+export const getNombre = (state) => state.user.nombre;
 export const getUser = (state) => state.user;
 export const getUserId = (state) => state.user.id;
 export const getUserApellido = (state) => state.user.apellido;

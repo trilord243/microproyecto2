@@ -16,6 +16,8 @@ export default function RegisterPage() {
     const [videojuegos, setVideojuegos] = useState([]);
     const [coverPhoto, setCoverPhoto] = useState(null);
 
+
+
     const handleFileChangeProfile = (event) => {
         const file = event.target.files ? event.target.files[0] : null;
         if (file) {
@@ -97,6 +99,7 @@ export default function RegisterPage() {
     /*  const videojuegos = useLoaderData(); */
 
     useEffect(() => {
+
         const fetchVideojuegos = async () => {
             try {
                 const videojuegos = await getAllVideojuegos(db);
@@ -107,7 +110,7 @@ export default function RegisterPage() {
         };
 
         fetchVideojuegos();
-    }, [videojuegos]);
+    }, []);
 
     return (
         <>
@@ -474,17 +477,17 @@ export async function action({ request }) {
 
 export async function loader() {
 
-    /*    try {
-           const data = await getAllVideojuegos(db);
-   
-           return data;
-   
-       } catch (error) {
-           console.error("Error al obtener los videojuegos:", error);
-           return [];
-   
-       }
-    */
+    try {
+        const data = await getAllVideojuegos(db);
+
+        return data;
+
+    } catch (error) {
+        console.error("Error al obtener los videojuegos:", error);
+        return [];
+
+    }
+
     return null
 
 
