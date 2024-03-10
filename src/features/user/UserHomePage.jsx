@@ -1,32 +1,29 @@
-import { collection, getDocs } from "firebase/firestore";
-import { db } from "../../firebase/firebase";
+
 import Card from "../ui/Card";
 import { useEffect, useState } from "react";
 import { selectSearch } from "../layout/SearchSlice";
 import { useSelector } from "react-redux";
+import { fetchAgrupaciones } from "../../api/getAgrupaciones";
 
 export const UserHomePage = () => {
-    const search = useSelector(selectSearch); // Obtiene el valor actual del campo de búsqueda
+    const search = useSelector(selectSearch);
     const [agrupaciones, setAgrupaciones] = useState([]);
 
     useEffect(() => {
-        const fetchAgrupaciones = async () => {
+        const loadAgrupaciones = async () => {
             try {
-                const querySnapshot = await getDocs(collection(db, "clubes"));
-                const agrupacionesList = querySnapshot.docs.map(doc => ({
-                    id: doc.id,
-                    ...doc.data(),
-                }));
+                const agrupacionesList = await fetchAgrupaciones();
                 setAgrupaciones(agrupacionesList);
             } catch (error) {
-                console.error("Error al obtener las agrupaciones: ", error);
+                console.error("Error al obtener las agrupaciones desde el componente: ", error);
             }
         };
 
-        fetchAgrupaciones();
+        loadAgrupaciones();
     }, []);
 
-    // Filtrar las agrupaciones basado en el valor de búsqueda
+
+
     const agrupacionesFiltradas = agrupaciones.filter(agrupacion =>
         agrupacion.nombre.toLowerCase().includes(search.toLowerCase())
     );

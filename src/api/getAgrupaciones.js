@@ -41,3 +41,20 @@ async function getVideojuego(db, videojuegoId) {
     return null;
   }
 }
+
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "../firebase/firebase";
+
+export const fetchAgrupaciones = async () => {
+  try {
+    const querySnapshot = await getDocs(collection(db, "clubes"));
+    const agrupacionesList = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    return agrupacionesList;
+  } catch (error) {
+    console.error("Error al obtener las agrupaciones: ", error);
+    throw new Error("Error al obtener las agrupaciones");
+  }
+};
