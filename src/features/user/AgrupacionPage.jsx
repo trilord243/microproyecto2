@@ -51,6 +51,19 @@ export default function AgrupacionPage() {
 
 
     return (
+
+            
+
+
+
+
+
+
+
+
+
+
+
         <div className="overflow-hidden bg-white py-16 lg:py-32">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="lg:flex lg:items-center lg:justify-between">

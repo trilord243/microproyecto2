@@ -5,6 +5,11 @@ import { GoogleAuthProvider, getAuth, signInWithEmailAndPassword, signInWithPopu
 import { updateUser } from "../user/userSlice";
 import store from "../../store";
 
+import { useEffect } from "react";
+
+
+import Loader from "../ui/Loader";
+
 
 export default function LoginPage() {
     const navigate = useNavigate();
@@ -27,6 +32,9 @@ export default function LoginPage() {
 
             const userRef = doc(db, "users", user.uid);
             const userSnap = await getDoc(userRef);
+
+
+            
 
 
             if (!userSnap.exists()) {
@@ -80,11 +88,11 @@ export default function LoginPage() {
 
             <div className="flex min-h-full flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8 ">
                 <div className="sm:mx-auto sm:w-full sm:max-w-md ">
-                    <img
+                    {/* <img
                         className="mx-auto h-10 w-auto"
                         src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
                         alt="Your Company"
-                    />
+                    /> */}
                     <h2 className="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
                         Inicia Sesion!
                     </h2>
@@ -96,7 +104,13 @@ export default function LoginPage() {
                 <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px] ">
                     <div className="bg-white px-6 py-12 shadow sm:rounded-lg  sm:px-12">
                         {formErrors && <p className="text-center text-red-500">  {formErrors.credential}</p>}
-                        <Form className="space-y-6" action="#" method="POST">
+                        {/* <Loader /> */}
+
+                        
+
+                       
+                        <Form className="space-y-6" action="#" method="POST"
+                        >
                             <div>
                                 <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
                                     Email address
@@ -144,9 +158,9 @@ export default function LoginPage() {
                         <div>
                             <div className="relative mt-10">
                                 <div className="absolute inset-0 flex items-center" aria-hidden="true">
-                                    <div className="w-full border-t border-gray-200" />
+                                    <div className="w-full border-t -z-10 border-gray-200" />
                                 </div>
-                                <div className="relative flex justify-center text-sm font-medium leading-6">
+                                <div className="relative flex -z-10 justify-center text-sm font-medium leading-6">
                                     <span className="bg-white px-6 text-gray-900">Or continue with</span>
                                 </div>
                             </div>

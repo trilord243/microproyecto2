@@ -19,6 +19,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getUserFoto, getUserName, resetUserState } from '../user/userSlice'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { signOut } from 'firebase/auth'
+import { GameCard } from '../ui/GameCard'
 const navigation = [
     { name: 'Principal', link: '/', icon: HomeIcon, current: true },
     { name: 'Perfil', link: '/profile', icon: UsersIcon, current: false },
@@ -57,6 +58,11 @@ export default function SideNavbar({ children }) {
         navigate('/games')
         setfilter((e.target.value))
     }
+
+    
+
+
+    
 
   
 
@@ -181,6 +187,9 @@ export default function SideNavbar({ children }) {
                                                         `${isActive ? 'bg-indigo-700 text-white' : 'text-indigo-200 hover:text-white hover:bg-indigo-700'} group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold`
 
                                                     )}
+                                                    
+            
+                                                   
                                                 >
                                                     <item.icon
                                                         className={classNames(
@@ -217,9 +226,7 @@ export default function SideNavbar({ children }) {
                             
                             onSubmit={handleSearch}
                             >
-                                <label htmlFor="search-field" className="sr-only">
-                                     Busca tus juegos
-                                </label>
+
                                 <MagnifyingGlassIcon
                                     className="pointer-events-none absolute inset-y-0 left-0 h-full w-5 text-gray-400"
                                     aria-hidden="true"
@@ -227,11 +234,13 @@ export default function SideNavbar({ children }) {
                                 <input
                                     id="search-field"
                                     className="block h-full w-full border-0 py-0 pl-8 pr-0 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm"
-                                    placeholder="Search..."
+                                    placeholder="The Witcher "
                                     type="search"
                                     name="search"
                                     value={filter}
                                     onChange={e => setfilter(e.target.value)}
+
+
                                 />
                             </form>
                             <div className="flex items-center gap-x-4 lg:gap-x-6">

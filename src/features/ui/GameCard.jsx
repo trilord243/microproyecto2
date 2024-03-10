@@ -4,14 +4,27 @@ import { getAllVideojuegos } from '../../api/getVideoJuegos';
 import { db } from '../../firebase/firebase';
 
 
+
+
+
 export const GameCard = () => {
     const data = useLoaderData();
-  
+
+    // const handlegotoAgrupacion = async () => {
+    //     try {
+    //         const agrupaciones = await getAllClubs(db);
+    //         console.log(agrupaciones);
+    //     }
+    //     catch (error) {
+    //         console.error("Error al obtener las agrupaciones:", error);
+    //     }
+
+    // }
+
     
 
-
   return (
-    <div >
+    <div>
         
 
         <h1 className="text-4xl text-center text-violet-600"> Lista de videojuegos</h1>
@@ -25,6 +38,15 @@ export const GameCard = () => {
                         <h3 className="text-xl font-semibold text-gray-800">
                         {videojuego.titulo}</h3>
                         <p className="text-gray-600">{videojuego.descripcion}</p>
+
+                        <button className="mt-4 bg-violet-600 text-white px-4 py-2 rounded-lg"
+                        // onClick={() => {
+                        //     handlegotoAgrupacion();
+                        
+                        // }
+                        
+                        >Ir a la agrupacion</button>
+
                     </div>
                 </div>
             ))}
