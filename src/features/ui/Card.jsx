@@ -1,4 +1,6 @@
 /* eslint-disable react/prop-types */
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 const Card = ({
     foto_agrupacion,
@@ -7,6 +9,19 @@ const Card = ({
 
     nombre_agrupacion,
 }) => {
+    const miembros = useSelector((state) => state.user.membresia);
+
+    const [isMember, setIsMember] = useState(false);
+
+    useEffect(() => {
+        const checkMembership = () => {
+            setIsMember(miembros.includes(id));
+        };
+
+        checkMembership();
+    }, [id, miembros]);
+
+
 
     const navigate = useNavigate();
     return (
@@ -18,6 +33,16 @@ const Card = ({
                     alt={nombre_agrupacion}
                 />
             </figure>
+            {isMember && <div className="flex w-full  items-center content-center justify-center">
+
+
+                <span className="inline-flex items-center gap-x-1.5 rounded-md bg-blue-100 px-2 py-1 text-xs font-medium text-blue-700">
+                    <svg className="h-1.5 w-1.5 fill-blue-500" viewBox="0 0 6 6" aria-hidden="true">
+                        <circle cx={3} cy={3} r={3} />
+                    </svg>
+                    Miembro
+                </span>
+            </div>}
 
             <div className="card-body p-3">
                 <h2 className="text-black text-2xl text-center font-semibold">

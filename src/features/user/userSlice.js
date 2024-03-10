@@ -62,7 +62,7 @@ const userSlice = createSlice({
       state.cover = action.payload;
     },
     updateMembresia: (state, action) => {
-      state.membresia = [...state.membresia, action.payload];
+      state.membresia = action.payload;
     },
     resetUserState: () => {
       return initialState;
@@ -92,6 +92,7 @@ export const {
   updateCover,
   resetUserState,
   uppDateId,
+  updateMembresia,
 } = userSlice.actions;
 
 export default userSlice.reducer;
