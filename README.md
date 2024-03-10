@@ -1,8 +1,8 @@
-# Club de Videojuegos
+# Club de Videojuegos🎮
 
 Bienvenido al Club de Videojuegos, una aplicación web construida con React y Firebase, diseñada para conectar a entusiastas de los videojuegos. Esta plataforma permite a los usuarios explorar y unirse a diferentes clubes de juegos, cada uno con una selección de videojuegos para disfrutar.
 
-## Características
+## Características⚜️
 
 - **Visión General del Club**: Cada club cuenta con un nombre, descripción y una lista de videojuegos asociados.
 - **Detalles del Juego**: Los videojuegos tienen un título, género y descripción.
@@ -15,7 +15,7 @@ Bienvenido al Club de Videojuegos, una aplicación web construida con React y Fi
 - **Banner Dinámico**: Al elegir un videojuego favorito, el banner se actualiza con la imagen de dicho juego.
 - **Búsqueda de Juegos Interactiva**: Al hacer clic en un juego buscado, se redirige al usuario al club que lo ofrece.
 
-## Visión Técnica
+## Visión Técnica😎
 
 - **React**: Para construir la interfaz de usuario y estructurar contenido incluyendo formularios, tablas y elementos visuales.
 - **Redux**: Para el manejo del estado de la aplicación.
@@ -24,11 +24,11 @@ Bienvenido al Club de Videojuegos, una aplicación web construida con React y Fi
 - **Diseño Responsivo**: Asegura que la aplicación es compatible con teléfonos, tabletas y escritorios.
 - **CSS Styling**: Proporciona un aspecto atractivo y coherente.
 
-## Esquema de la Base de Datos
+## Esquema de la Base de Datos💻
 
 Nota: Las IDs para Videojuegos y Clubes serán proporcionadas junto con los datos iniciales. Cada ID de Usuario corresponde a su UID generado por Firebase Auth.
 
-## Condiciones de Entrega
+## Condiciones de Entrega🤝
 
 - **Control de Versiones**: El proyecto se mantiene con Git y está alojado en GitHub.
 - **Librería de Desarrollo Web**: React es utilizado para construir la aplicación web.
