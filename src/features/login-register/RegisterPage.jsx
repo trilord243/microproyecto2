@@ -12,7 +12,6 @@ import { updateUser } from "../user/userSlice";
 import { getAllVideojuegos, getVideojuegoBanner } from "../../api/getVideoJuegos";
 
 
-import Loader from "../ui/Loader";
 
 export default function RegisterPage() {
     const navigate = useNavigate();
@@ -149,13 +148,9 @@ export default function RegisterPage() {
                             {error}
                         </p>}
 
-                        <Form className="space-y-6" action="#" method="POST" encType="multipart/form-data
-                        
-                            
-                        "  
-                          
+                        <Form className="space-y-6" action="#" method="POST" enctype="multipart/form-data" autoComplete="off" >                        
 
-                        >
+                        
                             <div>
                                 <label htmlFor="name" className="block text-sm font-medium leading-6 text-gray-900">
                                     Nombre
@@ -325,7 +320,6 @@ export default function RegisterPage() {
                                     type="submit"
                                     className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                                     
-                               
                                 >
                                     Sign in
                                 </button>

@@ -42,9 +42,6 @@ async function getVideojuego(db, videojuegoId) {
   }
 }
 
-<<<<<<< HEAD
-
-=======
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../firebase/firebase";
 
@@ -61,4 +58,3 @@ export const fetchAgrupaciones = async () => {
     throw new Error("Error al obtener las agrupaciones");
   }
 };
->>>>>>> 27b1d146094aec967ac8323a060fb092f11d619b
