@@ -15,7 +15,6 @@ import Loader from '../ui/Loader';
 export default function Profile() {
     const navigate1 = useNavigate();
     const navigate = useNavigation();
-
     const [videojuegos, setVideojuegos] = useState([]);
     const userName = useSelector(getUserName)
     const nombre = useSelector(getNombre)
@@ -25,6 +24,7 @@ export default function Profile() {
 
     const [coverPhoto, setCoverPhoto] = useState(foto);
 
+    const [favoriteGame, setFavoriteGame] = useState(videoJuegoFavorito || "1");
     useEffect(() => {
 
 
@@ -138,13 +138,12 @@ export default function Profile() {
                                     id="favorite"
                                     name="favorite"
                                     className="mt-2 block w-full rounded-md border border-gray-300 py-1.5 pl-3 pr-10 bg-white text-gray-900 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                                    defaultValue={videoJuegoFavorito || "1"}
+                                    value={favoriteGame}
+                                    onChange={(e) => setFavoriteGame(e.target.value)}
                                 >
                                     {videojuegos.map((videojuego) => (
-
                                         <option key={videojuego.id} value={videojuego.id}>{videojuego.titulo}</option>))
                                     }
-
                                 </select>
                             </div>
 
