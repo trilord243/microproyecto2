@@ -1,6 +1,6 @@
 
 
-import { Form } from 'react-router-dom'
+import { Form, useNavigation } from 'react-router-dom'
 import Heaading from './Heading'
 import { useEffect, useState } from 'react';
 import { getAllVideojuegos } from '../../api/getVideoJuegos';
@@ -11,8 +11,11 @@ import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { doc, updateDoc } from 'firebase/firestore';
 import { redirect, useNavigate } from 'react-router-dom';
 import store from '../../store';
+import Loader from '../ui/Loader';
 export default function Profile() {
-    const navigate = useNavigate();
+    const navigate1 = useNavigate();
+    const navigate = useNavigation();
+
     const [videojuegos, setVideojuegos] = useState([]);
     const userName = useSelector(getUserName)
     const nombre = useSelector(getNombre)
@@ -26,7 +29,7 @@ export default function Profile() {
 
 
         const fetchVideojuegos = async () => {
-            console.log("first")
+
             try {
                 const videojuegos = await getAllVideojuegos(db);
                 setVideojuegos(videojuegos);
@@ -38,11 +41,11 @@ export default function Profile() {
         fetchVideojuegos();
     }, []);
 
-
+    const isSubmiting = navigate.state === "submitting";
     const handleFileChangeProfile = (event) => {
         const file = event.target.files ? event.target.files[0] : null;
         if (file) {
-            console.log(file)
+
             const reader = new FileReader();
 
             reader.onloadend = () => {
@@ -53,8 +56,10 @@ export default function Profile() {
     };
     return (
         <div>
+            {isSubmiting && <Loader message="Cambiando datos..." />}
 
             <Heaading />
+
 
             <Form method="POST" encType="multipart/form-data" className='flex flex-col lg:ml-14 px-6 items-center mt-6'>
                 <div className="space-y-12">
@@ -187,7 +192,7 @@ export default function Profile() {
                 </div>
 
                 <div className="mt-6 flex items-center justify-end gap-x-6">
-                    <button onClick={() => navigate('/')} type="button" className="text-sm font-semibold leading-6 text-gray-900">
+                    <button onClick={() => navigate1('/')} type="button" className="text-sm font-semibold leading-6 text-gray-900">
                         Cancel
                     </button>
                     <button
@@ -210,7 +215,7 @@ export async function action({ request }) {
     const apellido = formData.get('apellido');
     const videojuegoFavorito = formData.get('favorite');
     const profilePhotoFile = formData.get('profile-photo');
-    console.log()
+
 
 
     const userId = store.getState().user.id;

@@ -31,7 +31,7 @@ export const UserLayout = () => {
 
 export async function loader() {
     const checkAuth = new Promise((resolve, reject) => {
-        console.log("first")
+
         const unsubscribe = onAuthStateChanged(
             auth,
             (currentUser) => {

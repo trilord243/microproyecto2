@@ -1,18 +1,20 @@
 import { getClub } from "../../api/getAgrupaciones";
 import { db } from "../../firebase/firebase";
 import { useLoaderData, useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { arrayUnion, doc, updateDoc } from "firebase/firestore";
+import { arrayRemove, arrayUnion, doc, updateDoc } from "firebase/firestore";
+import { updateMembresia } from "./userSlice";
+
 
 
 export default function AgrupacionPage() {
 
 
-
+    const dispatch = useDispatch();
 
     const data = useLoaderData();
-    console.log(data);
+
     const idUser = useSelector((state) => state.user.id);
     const miembros = useSelector((state) => state.user.membresia);
     const { id } = useParams();
@@ -27,8 +29,25 @@ export default function AgrupacionPage() {
         checkMembership();
     }, [id, miembros]);
 
+
+    const handleLeaveClub = async () => {
+        if (isMember) {
+            const userRef = doc(db, "users", idUser);
+            try {
+                await updateDoc(userRef, {
+                    miembroClub: arrayRemove(id)
+                });
+                const array = miembros.filter((miembro) => miembro !== id);
+                dispatch(updateMembresia(array));
+
+                setIsMember(false);
+            } catch (error) {
+                console.error("Error al dejar el club:", error);
+            }
+        }
+    };
     const handleJoinClub = async () => {
-        console.log("cp,emando")
+
         if (!isMember) {
 
             const userRef = doc(db, "users", idUser);
@@ -37,7 +56,9 @@ export default function AgrupacionPage() {
                     miembroClub: arrayUnion(id)
 
                 });
-                console.log("Unido al club")
+                const array = [...miembros, id];
+                dispatch(updateMembresia(array));
+
 
                 setIsMember(true);
             } catch (error) {
@@ -51,19 +72,6 @@ export default function AgrupacionPage() {
 
 
     return (
-
-            
-
-
-
-
-
-
-
-
-
-
-
         <div className="overflow-hidden bg-white py-16 lg:py-32">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="lg:flex lg:items-center lg:justify-between">
@@ -82,6 +90,14 @@ export default function AgrupacionPage() {
                                 Únete a nuestro equipo →
                             </button> : <p className="inline-flex items-center justify-center rounded-md bg-indigo-600 px-5 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" >Ya eres miembro</p>}
                         </div>
+                        {isMember && (
+                            <button
+                                onClick={handleLeaveClub}
+                                className="inline-flex items-center justify-center rounded-md bg-red-600 px-5 py-3 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 mt-7"
+                            >
+                                Dejar el club
+                            </button>
+                        )}
                     </div>
                     <div className="mt-8 flex gap-4 overflow-hidden lg:mt-0 lg:ml-10">
                         {data.videojuegosDetalles.slice(0, 3).map((juego, index) => (

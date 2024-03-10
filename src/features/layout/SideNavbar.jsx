@@ -51,20 +51,13 @@ export default function SideNavbar({ children }) {
         }
     };
     const [sidebarOpen, setSidebarOpen] = useState(false)
-    const [filter, setfilter] = useState('')
-
-    const handleSearch = e => {
-        e.preventDefault()
-        navigate('/games')
-        setfilter((e.target.value))
-    }
-
-    
 
 
-    
 
-  
+
+
+
+
 
     return (
         <>
@@ -112,7 +105,7 @@ export default function SideNavbar({ children }) {
                                         </div>
                                     </Transition.Child>
 
-                                    <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-indigo-600 px-6 pb-4">
+                                    <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-blue-600 px-6 pb-4">
                                         <div className="flex h-16 shrink-0 items-center">
                                             {newFunction()}
                                         </div>
@@ -125,13 +118,13 @@ export default function SideNavbar({ children }) {
                                                                 <NavLink
                                                                     to={item.link}
                                                                     className={({ isActive }) => (
-                                                                        `${isActive ? 'bg-indigo-700 text-white' : 'text-indigo-200 hover:text-white hover:bg-indigo-700'} group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold`
+                                                                        `${isActive ? 'bg-blue-700 text-white' : 'text-blue-200 hover:text-white hover:bg-blue-700'} group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold`
 
                                                                     )}
                                                                 >
                                                                     <item.icon
                                                                         className={classNames(
-                                                                            item.current ? 'text-white' : 'text-indigo-200 group-hover:text-white',
+                                                                            item.current ? 'text-white' : 'text-blue-200 group-hover:text-white',
                                                                             'h-6 w-6 shrink-0'
                                                                         )}
                                                                         aria-hidden="true"
@@ -146,10 +139,10 @@ export default function SideNavbar({ children }) {
                                                 <li className="mt-auto">
                                                     <a
                                                         href="#"
-                                                        className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-indigo-200 hover:bg-indigo-700 hover:text-white"
+                                                        className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-blue-200 hover:bg-blue-700 hover:text-white"
                                                     >
                                                         <Cog6ToothIcon
-                                                            className="h-6 w-6 shrink-0 text-indigo-200 group-hover:text-white"
+                                                            className="h-6 w-6 shrink-0 text-blue-200 group-hover:text-white"
                                                             aria-hidden="true"
                                                         />
                                                         Settings
@@ -167,13 +160,13 @@ export default function SideNavbar({ children }) {
                 {/* Static sidebar for desktop */}
                 <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
                     {/* Sidebar component, swap this element with another sidebar if you like */}
-                    <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-indigo-600 px-6 pb-4">
+                    <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-blue-600 px-6 pb-4">
                         <div className="flex h-16 shrink-0 items-center">
-                            {/* <img
+                            <img
                                 className="h-8 w-auto"
-                                src="https://tailwindui.com/img/logos/mark.svg?color=white"
-                                alt="Your Company"
-                            /> */}
+                                src="https://firebasestorage.googleapis.com/v0/b/microproyecto2-b3bf3.appspot.com/o/vecteezy_heart-rating-review-icon_22057047.png?alt=media&token=b7b9c7b9-eb97-40d6-a764-9c21ce1c25b3"
+                                alt="logo"
+                            />
                         </div>
                         <nav className="flex flex-1 flex-col">
                             <ul role="list" className="flex flex-1 flex-col gap-y-7">
@@ -184,16 +177,16 @@ export default function SideNavbar({ children }) {
                                                 <NavLink
                                                     to={item.link}
                                                     className={({ isActive }) => (
-                                                        `${isActive ? 'bg-indigo-700 text-white' : 'text-indigo-200 hover:text-white hover:bg-indigo-700'} group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold`
+                                                        `${isActive ? 'bg-blue-700 text-white' : 'text-blue-200 hover:text-white hover:bg-blue-700'} group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold`
 
                                                     )}
-                                                    
-            
-                                                   
+
+
+
                                                 >
                                                     <item.icon
                                                         className={classNames(
-                                                            item.current ? 'text-white' : 'text-indigo-200 group-hover:text-white',
+                                                            item.current ? 'text-white' : 'text-blue-200 group-hover:text-white',
                                                             'h-6 w-6 shrink-0'
                                                         )}
                                                         aria-hidden="true"
@@ -222,9 +215,9 @@ export default function SideNavbar({ children }) {
                         <div className="h-6 w-px bg-gray-900/10 lg:hidden" aria-hidden="true" />
 
                         <div className="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
-                            <form className="relative flex flex-1" 
-                            
-                            onSubmit={handleSearch}
+                            <form className="relative flex flex-1"
+
+
                             >
 
                                 <MagnifyingGlassIcon

@@ -32,9 +32,9 @@ export const UserHomePage = () => {
         <>
             <div>
                 <h2 className='text-center text-3xl text-blue-500'>Bienvenido a la página de agrupaciones!</h2>
-                <p className="text-center mt-7 text-gray-500">Visite la agrupación que desee</p>
+                <p className="text-center mt-7 mb-5 text-gray-500">Visite la agrupación que desee</p>
             </div>
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-y-7 lg:gap-x justify-items-center">
+            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3 gap-y-7 lg:gap-x justify-items-center">
                 {agrupacionesFiltradas.map((agrupacion) => (
                     <Card
                         key={agrupacion.id}
