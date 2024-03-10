@@ -19,7 +19,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { getUserFoto, getUserName, resetUserState } from '../user/userSlice'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { signOut } from 'firebase/auth'
+<<<<<<< HEAD
 import { GameCard } from '../ui/GameCard'
+=======
+import { updateSearch } from './SearchSlice'
+>>>>>>> 27b1d146094aec967ac8323a060fb092f11d619b
 const navigation = [
     { name: 'Principal', link: '/', icon: HomeIcon, current: true },
     { name: 'Perfil', link: '/profile', icon: UsersIcon, current: false },
@@ -43,9 +47,9 @@ export default function SideNavbar({ children }) {
 
     const resetUser = async () => {
         try {
-            await signOut(auth); // Espera a que signOut se complete
-            dispatch(resetUserState()); // Resetea el estado del usuario
-            navigate('/login'); // Redirecciona al usuario
+            await signOut(auth);
+            dispatch(resetUserState());
+            navigate('/login');
         } catch (error) {
             console.error("Error signing out: ", error);
         }
@@ -237,10 +241,14 @@ export default function SideNavbar({ children }) {
                                     placeholder="The Witcher "
                                     type="search"
                                     name="search"
+<<<<<<< HEAD
                                     value={filter}
                                     onChange={e => setfilter(e.target.value)}
 
 
+=======
+                                    onChange={(e) => dispatch(updateSearch(e.target.value))}
+>>>>>>> 27b1d146094aec967ac8323a060fb092f11d619b
                                 />
                             </form>
                             <div className="flex items-center gap-x-4 lg:gap-x-6">

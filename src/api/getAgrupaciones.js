@@ -42,4 +42,23 @@ async function getVideojuego(db, videojuegoId) {
   }
 }
 
+<<<<<<< HEAD
 
+=======
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "../firebase/firebase";
+
+export const fetchAgrupaciones = async () => {
+  try {
+    const querySnapshot = await getDocs(collection(db, "clubes"));
+    const agrupacionesList = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    return agrupacionesList;
+  } catch (error) {
+    console.error("Error al obtener las agrupaciones: ", error);
+    throw new Error("Error al obtener las agrupaciones");
+  }
+};
+>>>>>>> 27b1d146094aec967ac8323a060fb092f11d619b
