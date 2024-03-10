@@ -54,7 +54,7 @@ Para ejecutar este proyecto localmente:
 1. Clona el repositorio.
 2. Ejecuta `npm install` para instalar las dependencias requeridas.
 3. Configura tu proyecto Firebase y actualiza la configuración en la aplicación.
-4. Ejecuta `npm start` para iniciar el servidor de desarrollo.
+4. Ejecuta `npm  run dev` para iniciar el servidor de desarrollo.
 
 ## Despliegue
 
