@@ -149,7 +149,7 @@ export default function LoginPage() {
                                     type="submit"
                                     className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                                 >
-                                    Sign in
+                                    Incia sesion
                                 </button>
                             </div>
                         </Form>
@@ -160,7 +160,7 @@ export default function LoginPage() {
                                     <div className="w-full border-t -z-10 border-gray-200" />
                                 </div>
                                 <div className="relative flex -z-10 justify-center text-sm font-medium leading-6">
-                                    <span className="bg-white px-6 text-gray-900">Or continue with</span>
+                                    <span className="bg-white px-6 text-gray-900">O inicie sesion  con</span>
                                 </div>
                             </div>
 

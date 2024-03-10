@@ -22,7 +22,7 @@ const Card = ({
     }, [id, miembros]);
 
 
-    console.log("isMember", isMember);
+
     const navigate = useNavigate();
     return (
         <div className="card w-80   bg-white shadow-2xl">

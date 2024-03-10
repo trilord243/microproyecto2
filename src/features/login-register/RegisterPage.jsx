@@ -326,7 +326,7 @@ export default function RegisterPage() {
                                     className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
 
                                 >
-                                    Sign in
+                                    Registrese
                                 </button>
                             </div>
                         </Form>
@@ -337,7 +337,7 @@ export default function RegisterPage() {
                                     <div className="w-full border-t border-gray-200" />
                                 </div>
                                 <div className="relative flex justify-center text-sm font-medium leading-6">
-                                    <span className="bg-white px-6 text-gray-900">Or continue with</span>
+                                    <span className="bg-white px-6 text-gray-900">O   Registrese con </span>
                                 </div>
                             </div>
 
