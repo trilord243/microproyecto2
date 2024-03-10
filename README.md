@@ -39,14 +39,6 @@ Nota: Las IDs para Videojuegos y Clubes serán proporcionadas junto con los dato
 
 Los datos iniciales sobre videojuegos y clubes se cargan manualmente en la base de datos para ahorrar tiempo de desarrollo y crear membresías.
 
-## Criterios de Evaluación
-
-- Estructura de componentes de React.
-- Responsive.
-- Estructura del Router.
-- Funcionalidad a través de varias características.
-- Configuración de Firebase y esfuerzo estético.
-
 ## Comenzando
 
 Para ejecutar este proyecto localmente:
@@ -58,12 +50,5 @@ Para ejecutar este proyecto localmente:
 
 ## Despliegue
 
-La aplicación está desplegada con Firebase Hosting. Para instrucciones detalladas, consulta la [documentación de Firebase](https://firebase.google.com/docs/hosting).
+La aplicación está desplegada con Firebase Hosting. https://microproyecto2-b3bf3.web.app/games
 
-## Contribuciones
-
-Si estás interesado en contribuir, por favor lee las directrices de contribución antes de enviar tu PR.
-
-## Licencia
-
-Este proyecto es de código abierto y está disponible bajo la [Licencia MIT](LICENSE.md).
