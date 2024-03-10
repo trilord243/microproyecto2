@@ -305,7 +305,7 @@ export default function SideNavbar({ children }) {
     function newFunction() {
         return <img
             className="h-8 w-auto"
-            src="https://tailwindui.com/img/logos/mark.svg?color=white"
+            src="https://firebasestorage.googleapis.com/v0/b/microproyecto2-b3bf3.appspot.com/o/vecteezy_heart-rating-review-icon_22057047.png?alt=media&token=b7b9c7b9-eb97-40d6-a764-9c21ce1c25b3"
             alt="Your Company" />
     }
 }

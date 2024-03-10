@@ -9,12 +9,18 @@ import { db } from "../../firebase/firebase";
 import { fetchAgrupaciones } from "../../api/getAgrupaciones";
 
 import { useNavigate } from "react-router-dom";
+import { CardSkeleton } from "./CardSkeleton";
 
 export const GameCard = () => {
-    const navigate = useNavigate();
+    const navigate1 = useNavigate();
+
     const data = useLoaderData();
     const search = useSelector(selectSearch);
     const [filteredVideojuegos, setFilteredVideojuegos] = useState([]);
+
+
+
+
 
     useEffect(() => {
         if (data.videojuegos) {
@@ -28,10 +34,10 @@ export const GameCard = () => {
 
     const handleAgrupacionesClick = async (id) => {
         try {
-            const agrupaciones = await fetchAgrupaciones(); 
+            const agrupaciones = await fetchAgrupaciones();
             const agrupacion = agrupaciones.find(agrupacion => agrupacion.videojuegos.includes(id));
             if (agrupacion) {
-                navigate(`/agrupacion/${agrupacion.id}`);
+                navigate1(`/agrupacion/${agrupacion.id}`);
             } else {
                 console.log("No agrupacion found for the game");
             }
@@ -40,7 +46,7 @@ export const GameCard = () => {
             console.error("Error al obtener las agrupaciones:", error);
         }
 
-        
+
     };
 
 
@@ -59,24 +65,32 @@ export const GameCard = () => {
         <div>
             <h1 className="text-4xl text-center text-violet-600">Lista de videojuegos</h1>
             <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                {filteredVideojuegos.map((videojuego) => (
-                        <div key={videojuego.id} className="bg-white rounded-lg shadow-lg">
-                            <img src={videojuego.banner} alt="" className="w-full h-32 object-cover object-center" />
-                            <div className="p-4">
-                                <h3 className="text-xl font-semibold text-gray-800">
-                                    {videojuego.titulo}</h3>
-                                <p className="text-gray-600">{videojuego.descripcion}</p>
 
-                                <button
-                                
-                                 onClick={ () => handleAgrupacionesClick(videojuego.id)}
-                                 className="mt-4 bg-violet-600 hover:bg-violet-700 text-white font-semibold py-2 px-4 rounded">
-                                    Ver agrupaciones
 
-                                </button>
+
+                {!data ? (
+                    [...Array(6)].map((_, index) => <CardSkeleton key={index} />)) :
+
+                    (
+                        filteredVideojuegos.map((videojuego) => (
+                            <div key={videojuego.id} className="bg-white rounded-lg shadow-lg">
+                                <img src={videojuego.banner} alt="" className="w-full h-32 object-cover object-center" />
+                                <div className="p-4">
+                                    <h3 className="text-xl font-semibold text-gray-800">
+                                        {videojuego.titulo}</h3>
+                                    <p className="text-gray-600">{videojuego.descripcion}</p>
+
+                                    <button
+
+                                        onClick={() => handleAgrupacionesClick(videojuego.id)}
+                                        className="mt-4 bg-violet-600 hover:bg-violet-700 text-white font-semibold py-2 px-4 rounded">
+                                        Ver agrupaciones
+
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                ))}
+                        ))
+                    )}
             </div>
         </div>
     );

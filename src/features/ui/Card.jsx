@@ -25,7 +25,7 @@ const Card = ({
 
     const navigate = useNavigate();
     return (
-        <div className="card w-80   bg-white shadow-2xl">
+        <div className="card w-80 bg-white shadow-2xl">
             <figure className="h-48 p-4 ">
                 <img
                     className="w-full h-full rounded-2xl object-cover shadow-lg"
